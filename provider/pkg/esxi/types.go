@@ -1,7 +1,7 @@
 package esxi
 
 const (
-	logLevel = 9
+	logLevel = 3
 
 	// Virtual Disks
 	vdThin             = "thin"
@@ -19,6 +19,7 @@ const (
 	vmDefaultNumVCpus              = 1
 	vmDefaultVirtualHWVer          = 13
 	vmDefaultOs                    = "centos"
+	vmDefaultUpgradeEngine         = ""
 	vmDefaultStartupTimeout        = 120
 
 	esxiUnknown = "Unknown"
@@ -137,6 +138,8 @@ type VirtualMachine struct {
 	NumVCpus int
 	// VM OS type.
 	Os string
+	// VM Upgrade Engine
+	UpgradeEngine string
 	// VM OVF properties.
 	OvfProperties []KeyValuePair
 	// The amount of time, in seconds, to wait for the guest to boot and run ovfProperties. (0-6000)

@@ -156,6 +156,11 @@ func (esxi *Host) createVirtualMachine(vm VirtualMachine) (VirtualMachine, error
 		return VirtualMachine{}, fmt.Errorf("failed to update vmx contents: %w", err)
 	}
 
+	err = esxi.updateVirtualMachineEngine(true, vm)
+	if err != nil {
+		return VirtualMachine{}, fmt.Errorf("failed to update virtual machine engine: %w", err)
+	}
+
 	return vm, nil
 }
 
@@ -200,6 +205,7 @@ func (esxi *Host) getOrCreateVirtualMachine(vm VirtualMachine) (VirtualMachine, 
 // handleOvfProperties handles OVF properties injection and power off if necessary.
 func (esxi *Host) handleOvfProperties(vm VirtualMachine) error {
 	if len(vm.OvfProperties) > 0 {
+		logging.V(logLevel).Infof("handleOvfProperties: Preparing => %d", len(vm.OvfProperties))
 		currentPowerState := esxi.getVirtualMachinePowerState(vm.Id)
 		if currentPowerState != vmTurnedOn {
 			return fmt.Errorf("failed to power on after ovfProperties injection")
@@ -207,6 +213,7 @@ func (esxi *Host) handleOvfProperties(vm VirtualMachine) error {
 
 		// Allow cloud-init to process.
 		duration := time.Duration(vm.OvfPropertiesTimer) * time.Second
+		logging.V(logLevel).Infof("handleOvfProperties: Waiting to complete => %d", duration)
 		time.Sleep(duration)
 		esxi.powerOffVirtualMachine(vm.Id, vm.ShutdownTimeout)
 	}
@@ -318,6 +325,7 @@ func (esxi *Host) buildVirtualMachineFromSource(vm VirtualMachine) error {
 	}
 
 	// Execute ovftool command
+	logging.V(logLevel).Infof("buildVirtualMachineFromSource: OVFTool Command => %s", ovfCmd)
 	cmd := exec.Command(osShellCmd, osShellCmdOpt, ovfCmd)
 	var out bytes.Buffer
 	cmd.Stdout = &out
@@ -407,6 +415,21 @@ func (esxi *Host) readVmxContents(id string) (string, error) {
 	vmxContents, err := esxi.Execute(command, "read vmx file")
 
 	return vmxContents, err
+}
+
+func (esxi *Host) updateVirtualMachineEngine(isNew bool, vm VirtualMachine) error {
+	if len(vm.UpgradeEngine) > 0 {
+		ver := ""
+		if vm.UpgradeEngine != "latest" {
+			ver = vm.UpgradeEngine
+		}
+		command := fmt.Sprintf("vim-cmd vmsvc/upgrade %s %s", vm.Id, ver)
+		_, err := esxi.Execute(command, "vmsvc/upgrade")
+		if err != nil {
+			return fmt.Errorf("failed to upgrade virtual machine version: %w", err)
+		}
+	}
+	return nil
 }
 
 func (esxi *Host) updateVmxContents(isNew bool, vm VirtualMachine) error {
@@ -640,16 +663,26 @@ func (esxi *Host) powerOffVirtualMachine(id string, shutdownTimeout int) {
 	if savedPowerState == vmTurnedOn {
 		if shutdownTimeout > 0 {
 			// Try to gracefully shut down the VM first.
+			tries := 1
 			command := fmt.Sprintf("vim-cmd vmsvc/power.shutdown %s", id)
-			_, _ = esxi.Execute(command, "vmsvc/power.shutdown")
-			time.Sleep(vmSleepBetweenPowerStateChecks * time.Second)
-
-			for i := 0; i < (shutdownTimeout / vmSleepBetweenPowerStateChecks); i++ {
-				if esxi.getVirtualMachinePowerState(id) == vmTurnedOff {
-					// VM is successfully shut down.
-					return
-				}
+			_, err := esxi.Execute(command, "vmsvc/power.shutdown")
+			for err != nil && tries < 5 {
+				logging.V(logLevel).Infof("powerOffVirtualMachine: Command %s failed => %s", command, err)
 				time.Sleep(vmSleepBetweenPowerStateChecks * time.Second)
+				_, err = esxi.Execute(command, "vmsvc/power.shutdown")
+				tries++
+			}
+			// We're here if we hit 5 tries on the command
+			if err == nil {
+				time.Sleep(vmSleepBetweenPowerStateChecks * time.Second)
+
+				for i := 0; i < (shutdownTimeout / vmSleepBetweenPowerStateChecks); i++ {
+					if esxi.getVirtualMachinePowerState(id) == vmTurnedOff {
+						// VM is successfully shut down.
+						return
+					}
+					time.Sleep(vmSleepBetweenPowerStateChecks * time.Second)
+				}
 			}
 		}
 

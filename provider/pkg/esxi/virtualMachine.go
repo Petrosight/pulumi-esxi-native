@@ -90,6 +90,11 @@ func VirtualMachineUpdate(id string, inputs resource.PropertyMap, esxi *Host) (s
 		return id, nil, fmt.Errorf("failed to update vmx contents: %w", err)
 	}
 
+	err = esxi.updateVirtualMachineEngine(true, vm)
+	if err != nil {
+		return id, nil, fmt.Errorf("failed to update virtual machine engine: %w", err)
+	}
+
 	// Grow boot disk
 	bootDiskVmdkPath, _ := esxi.getBootDiskPath(vm.Id)
 
@@ -164,6 +169,7 @@ func parseVirtualMachine(id string, inputs resource.PropertyMap, connection *Con
 	vm.ShutdownTimeout = parseIntProperty(inputs, "shutdownTimeout", vmDefaultShutdownTimeout)
 	vm.VirtualDisks = parseVirtualDisks(inputs)
 	vm.OvfProperties = parseKeyValuePairsProperty(inputs, "ovfProperties")
+	vm.UpgradeEngine = parseStringProperty(inputs, "upgradeEngine", vmDefaultUpgradeEngine)
 	vm.Notes = parseStringProperty(inputs, "notes", "")
 	vm.Info = parseKeyValuePairsProperty(inputs, "info")
 

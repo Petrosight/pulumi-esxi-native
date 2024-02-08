@@ -17,8 +17,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"os"
-
 	pbempty "github.com/golang/protobuf/ptypes/empty"
 	structpb "github.com/golang/protobuf/ptypes/struct"
 	"github.com/pkg/errors"
@@ -30,12 +28,13 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"os"
 
 	"github.com/pulumiverse/pulumi-esxi-native/provider/pkg/esxi"
 )
 
 const (
-	logLevel = 9
+	logLevel = 3
 )
 
 type cancellationContext struct {
@@ -590,5 +589,8 @@ func getConfig(vars map[string]string, key, env string) (string, string) {
 	if val, ok := os.LookupEnv(env); ok {
 		return val, ""
 	}
-	return "", fmt.Sprintf("config key 'esxi-native:config:%s', or env var.: '%s', must be provided", key, env)
+	if val, ok := vars[key]; ok {
+		return val, ""
+	}
+	return "", fmt.Sprintf("config key 'esxi-native:config:%s', '%s', or env var.: '%s', must be provided", key, key, env)
 }
