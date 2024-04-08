@@ -2,10 +2,9 @@ package esxi
 
 import (
 	"fmt"
-	"reflect"
-
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	pulumirpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
+	"reflect"
 
 	"github.com/pulumiverse/pulumi-esxi-native/provider/pkg/schema"
 )

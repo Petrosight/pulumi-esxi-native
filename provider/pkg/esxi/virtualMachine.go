@@ -15,6 +15,7 @@ import (
 
 func VirtualMachineGet(inputs resource.PropertyMap, esxi *Host) (resource.PropertyMap, error) {
 	var id string
+
 	if nameProp, has := inputs["name"]; has {
 		var err error
 		id, err = esxi.getVirtualMachineId(nameProp.StringValue())
@@ -77,6 +78,12 @@ func VirtualMachineCreate(inputs resource.PropertyMap, esxi *Host) (string, reso
 }
 
 func VirtualMachineUpdate(id string, inputs resource.PropertyMap, esxi *Host) (string, resource.PropertyMap, error) {
+	_, err := esxi.validateVirtualMachineId(id)
+	if err != nil {
+		/* Virtual machine doesn't exist, continue */
+		return id, nil, fmt.Errorf("failed to find virtual machine with id %s", id)
+	}
+
 	vm := parseVirtualMachine(id, inputs, esxi.Connection)
 
 	currentPowerState := esxi.getVirtualMachinePowerState(vm.Id)
@@ -85,7 +92,7 @@ func VirtualMachineUpdate(id string, inputs resource.PropertyMap, esxi *Host) (s
 	}
 
 	// make updates to vmx file
-	err := esxi.updateVmxContents(true, vm)
+	err = esxi.updateVmxContents(true, vm)
 	if err != nil {
 		return id, nil, fmt.Errorf("failed to update vmx contents: %w", err)
 	}
@@ -120,6 +127,13 @@ func VirtualMachineUpdate(id string, inputs resource.PropertyMap, esxi *Host) (s
 func VirtualMachineDelete(id string, esxi *Host) error {
 	var command, stdout string
 	var err error
+
+	_, err = esxi.validateVirtualMachineId(id)
+	if err != nil {
+		/* This virtual machine doesn't exist, we don't want to actually fail, more consider it removed? */
+		logging.V(logLevel).Infof("VirtualMachineDelete: Unable to find virtual machine `%s`, continuing", id)
+		return nil
+	}
 
 	esxi.powerOffVirtualMachine(id, vmDefaultShutdownTimeout)
 

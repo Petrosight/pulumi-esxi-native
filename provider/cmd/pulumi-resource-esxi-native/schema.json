@@ -12,9 +12,9 @@
     "license": "Apache-2.0",
     "attribution": "This Pulumi package is based on the Terraform Provider [terraform-provider-esxi](https://github.com/josenk/terraform-provider-esxi/tree/master).",
     "homepage": "https://github.com/pulumiverse/pulumi-esxi-native",
-    "pluginDownloadURL": "github://api.github.com/pulumiverse/pulumi-esxi-native",
-    "repository": "https://github.com/pulumiverse/pulumi-esxi-native",
-    "logoUrl": "https://raw.githubusercontent.com/pulumiverse/pulumi-esxi-native/main/docs/esxi-logo.png",
+    "pluginDownloadURL": "github://api.github.com/petrosight/pulumi-esxi-native",
+    "repository": "https://github.com/petrosight/pulumi-esxi-native",
+    "logoUrl": "https://raw.githubusercontent.com/petrosight/pulumi-esxi-native/main/docs/esxi-logo.png",
     "publisher": "pulumiverse",
     "language": {
         "csharp": {

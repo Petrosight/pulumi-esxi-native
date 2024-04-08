@@ -14,7 +14,7 @@
     "license": "Apache-2.0",
     "scripts": {
         "build": "tsc",
-        "install": "node scripts/install-pulumi-plugin.js resource esxi-native ${VERSION}"
+        "install": "node install-pulumi-plugin.js resource esxi-native ${VERSION}"
     },
     "dependencies": {
         "@pulumi/pulumi": "^3.0.0"
@@ -26,6 +26,6 @@
     "pulumi": {
         "resource": true,
         "name": "esxi-native",
-        "server": "github://api.github.com/pulumiverse/pulumi-esxi-native"
+        "server": "github://api.github.com/petrosight/pulumi-esxi-native"
     }
 }

@@ -431,7 +431,7 @@ func (p *esxiProvider) Update(_ context.Context, req *pulumirpc.UpdateRequest) (
 	}
 
 	// Process Update call.
-	outputs, err := p.resourceService.Update(id, resourceToken, make(resource.PropertyMap), p.esxi)
+	outputs, err := p.resourceService.Update(resourceToken, id, newInputs, p.esxi)
 	if err != nil {
 		return nil, err
 	}

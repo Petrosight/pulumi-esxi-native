@@ -362,7 +362,6 @@ func (esxi *Host) getVirtualMachineId(name string) (string, error) {
 	return id, nil
 }
 
-/*
 func (esxi *Host) validateVirtualMachineId(id string) (string, error) {
 	var command string
 	var err error
@@ -373,13 +372,11 @@ func (esxi *Host) validateVirtualMachineId(id string) (string, error) {
 	id, err = esxi.Execute(command, "validate vm id exists")
 	logging.V(logLevel).Infof("validateVirtualMachineId: result => %s", id)
 	if err != nil {
-		logging.V(logLevel).Infof("validateVirtualMachineId: Failed get vm by id => %s", err)
 		return "", fmt.Errorf("failed get vm id: %w", err)
 	}
 
 	return id, nil
 }
-*/
 
 func (esxi *Host) getBootDiskPath(id string) (string, error) {
 	var command, stdout string
@@ -702,8 +699,9 @@ func (esxi *Host) powerOffVirtualMachine(id string, shutdownTimeout int) {
 
 func (esxi *Host) getVirtualMachinePowerState(id string) string {
 	command := fmt.Sprintf("vim-cmd vmsvc/power.getstate %s", id)
-	stdout, _ := esxi.Execute(command, "vmsvc/power.getstate")
-	if strings.Contains(stdout, "Unable to find a VM corresponding") {
+	stdout, err := esxi.Execute(command, "vmsvc/power.getstate")
+
+	if err != nil || strings.Contains(stdout, "Unable to find a VM corresponding") {
 		return esxiUnknown
 	}
 
