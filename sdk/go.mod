@@ -1,4 +1,4 @@
-module github.com/pulumiverse/pulumi-esxi-native/sdk
+module github.com/petrosight/pulumi-esxi-native/sdk
 
 go 1.17
 

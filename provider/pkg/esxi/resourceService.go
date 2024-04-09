@@ -6,7 +6,7 @@ import (
 	pulumirpc "github.com/pulumi/pulumi/sdk/v3/proto/go"
 	"reflect"
 
-	"github.com/pulumiverse/pulumi-esxi-native/provider/pkg/schema"
+	"github.com/petrosight/pulumi-esxi-native/provider/pkg/schema"
 )
 
 type functionsMapper map[string]interface{}

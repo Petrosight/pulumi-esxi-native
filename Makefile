@@ -2,7 +2,7 @@ PROJECT_NAME := Pulumi ESXi Native Resource Provider
 
 PACK             := esxi-native
 PACKDIR          := sdk
-PROJECT          := github.com/pulumiverse/pulumi-esxi-native
+PROJECT          := github.com/petrosight/pulumi-esxi-native
 NODE_MODULE_NAME := @pulumiverse/esxi-native
 NUGET_PKG_NAME   := Pulumiverse.EsxiNative
 

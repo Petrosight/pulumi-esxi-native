@@ -9,7 +9,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/stretchr/testify/require"
 
-	"github.com/pulumiverse/pulumi-esxi-native/provider/pkg/esxi"
+	"github.com/petrosight/pulumi-esxi-native/provider/pkg/esxi"
 )
 
 func Test_getDefaultName(t *testing.T) {

@@ -19,7 +19,7 @@ import (
 
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 
-	"github.com/pulumiverse/pulumi-esxi-native/provider/pkg/esxi"
+	"github.com/petrosight/pulumi-esxi-native/provider/pkg/esxi"
 )
 
 // getDefaultName retrieves either the explicitly specified name in inputs,

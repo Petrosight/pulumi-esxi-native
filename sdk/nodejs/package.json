@@ -9,7 +9,7 @@
         "category/infrastructure",
         "kind/native"
     ],
-    "homepage": "https://github.com/pulumiverse/pulumi-esxi-native",
+    "homepage": "https://github.com/petrosight/pulumi-esxi-native",
     "repository": "https://github.com/petrosight/pulumi-esxi-native",
     "license": "Apache-2.0",
     "scripts": {

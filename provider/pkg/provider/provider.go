@@ -30,7 +30,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"os"
 
-	"github.com/pulumiverse/pulumi-esxi-native/provider/pkg/esxi"
+	"github.com/petrosight/pulumi-esxi-native/provider/pkg/esxi"
 )
 
 const (
