@@ -16,8 +16,11 @@
 package main
 
 import (
+	"flag"
+	"fmt"
+
 	"github.com/petrosight/pulumi-esxi-native/provider/pkg/provider"
-	"github.com/petrosight/pulumi-esxi-native/provider/pkg/version"
+    "github.com/petrosight/pulumi-esxi-native/provider/pkg/version"
 
 	_ "embed"
 )
@@ -28,5 +31,12 @@ var providerName = "esxi-native"
 var pulumiSchema []byte
 
 func main() {
+	showVersion := flag.Bool("version", false, "display version number and exit")
+	flag.Parse()
+
+	if *showVersion {
+		fmt.Fprintf(flag.CommandLine.Output(), "Version v%s\n", version.Version)
+		return
+	}
 	provider.Serve(providerName, version.Version, pulumiSchema)
 }
