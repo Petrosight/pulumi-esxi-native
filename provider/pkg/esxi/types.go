@@ -21,6 +21,7 @@ const (
 	vmDefaultOs                    = "centos"
 	vmDefaultUpgradeEngine         = ""
 	vmDefaultStartupTimeout        = 120
+	vmDefaultOvfPropertiesTimer    = 6000
 
 	esxiUnknown = "Unknown"
 

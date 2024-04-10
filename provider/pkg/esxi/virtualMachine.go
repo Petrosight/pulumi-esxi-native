@@ -183,6 +183,7 @@ func parseVirtualMachine(id string, inputs resource.PropertyMap, connection *Con
 	vm.ShutdownTimeout = parseIntProperty(inputs, "shutdownTimeout", vmDefaultShutdownTimeout)
 	vm.VirtualDisks = parseVirtualDisks(inputs)
 	vm.OvfProperties = parseKeyValuePairsProperty(inputs, "ovfProperties")
+	vm.OvfPropertiesTimer = parseIntProperty(inputs, "ovfPropertiesTimer", vmDefaultOvfPropertiesTimer)
 	vm.UpgradeEngine = parseStringProperty(inputs, "upgradeEngine", vmDefaultUpgradeEngine)
 	vm.Notes = parseStringProperty(inputs, "notes", "")
 	vm.Info = parseKeyValuePairsProperty(inputs, "info")

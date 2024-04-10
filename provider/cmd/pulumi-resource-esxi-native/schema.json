@@ -633,6 +633,10 @@
                     "description": "The amount of time, in seconds, to wait for the guest to boot and run ovfProperties. (0-6000)",
                     "default": 6000
                 },
+                "upgradeEngine": {
+                    "type": "string",
+                    "description": "Upgrade the ESXI Virtual Machine engine to the supplied version or `latest`."
+                },
                 "notes": {
                     "type": "string",
                     "description": "VM memory size."

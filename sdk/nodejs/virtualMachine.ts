@@ -140,6 +140,7 @@ export class VirtualMachine extends pulumi.CustomResource {
             resourceInputs["resourcePoolName"] = (args ? args.resourcePoolName : undefined) ?? "/";
             resourceInputs["shutdownTimeout"] = (args ? args.shutdownTimeout : undefined) ?? 600;
             resourceInputs["startupTimeout"] = (args ? args.startupTimeout : undefined) ?? 600;
+            resourceInputs["upgradeEngine"] = args ? args.upgradeEngine : undefined;
             resourceInputs["virtualDisks"] = args ? args.virtualDisks : undefined;
             resourceInputs["virtualHWVer"] = (args ? args.virtualHWVer : undefined) ?? 13;
             resourceInputs["ipAddress"] = undefined /*out*/;
@@ -248,6 +249,10 @@ export interface VirtualMachineArgs {
      * The amount of vm uptime, in seconds, to wait for an available IP address on this virtual machine. (0-600)
      */
     startupTimeout?: pulumi.Input<number>;
+    /**
+     * Upgrade the ESXI Virtual Machine engine to the supplied version or `latest`.
+     */
+    upgradeEngine?: pulumi.Input<string>;
     /**
      * VM virtual disks.
      */

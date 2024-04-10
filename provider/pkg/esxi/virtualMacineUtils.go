@@ -767,6 +767,7 @@ func (vm *VirtualMachine) toMap(keepId ...bool) map[string]interface{} {
 	delete(outputs, "sourcePath")
 	delete(outputs, "ovfProperties")
 	delete(outputs, "ovfPropertiesTimer")
+	delete(outputs, "upgradeEngine")
 
 	if vm.BootDiskType == esxiUnknown || len(vm.BootDiskType) == 0 {
 		delete(outputs, "bootDiskType")
