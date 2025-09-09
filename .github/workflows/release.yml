@@ -149,7 +149,7 @@ jobs:
           - nodejs
           #- python
           #- dotnet
-          - go
+          #- go
         dotnetversion:
           - 3.1.301
         goversion:
