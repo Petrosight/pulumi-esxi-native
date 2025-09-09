@@ -15,7 +15,7 @@ class InstallPluginCommand(install):
     def run(self):
         install.run(self)
         try:
-            check_call(['pulumi', 'plugin', 'install', 'resource', 'esxi-native', PLUGIN_VERSION, '--server', 'github://api.github.com/pulumiverse/pulumi-esxi-native'])
+            check_call(['pulumi', 'plugin', 'install', 'resource', 'esxi-native', PLUGIN_VERSION, '--server', 'github://api.github.com/petrosight/pulumi-esxi-native'])
         except OSError as error:
             if error.errno == errno.ENOENT:
                 print(f"""
@@ -47,9 +47,9 @@ setup(name='pulumiverse_esxi_native',
           'install': InstallPluginCommand,
       },
       keywords='pulumi esxi esxi-native category/infrastructure kind/native',
-      url='https://github.com/pulumiverse/pulumi-esxi-native',
+      url='https://github.com/petrosight/pulumi-esxi-native',
       project_urls={
-          'Repository': 'https://github.com/pulumiverse/pulumi-esxi-native'
+          'Repository': 'https://github.com/petrosight/pulumi-esxi-native'
       },
       license='Apache-2.0',
       packages=find_packages(),

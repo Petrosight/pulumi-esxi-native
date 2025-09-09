@@ -1,5 +1,5 @@
 {
   "resource": true,
   "name": "esxi-native",
-  "server": "github://api.github.com/pulumiverse/pulumi-esxi-native"
+  "server": "github://api.github.com/petrosight/pulumi-esxi-native"
 }

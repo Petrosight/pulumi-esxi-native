@@ -36,6 +36,7 @@ class VirtualMachineArgs:
                  resource_pool_name: Optional[pulumi.Input[str]] = None,
                  shutdown_timeout: Optional[pulumi.Input[int]] = None,
                  startup_timeout: Optional[pulumi.Input[int]] = None,
+                 upgrade_engine: Optional[pulumi.Input[str]] = None,
                  virtual_disks: Optional[pulumi.Input[Sequence[pulumi.Input['VMVirtualDiskArgs']]]] = None,
                  virtual_hw_ver: Optional[pulumi.Input[int]] = None):
         """
@@ -59,6 +60,7 @@ class VirtualMachineArgs:
         :param pulumi.Input[str] resource_pool_name: Resource pool name to place vm.
         :param pulumi.Input[int] shutdown_timeout: The amount of vm uptime, in seconds, to wait for an available IP address on this virtual machine. (0-600)
         :param pulumi.Input[int] startup_timeout: The amount of vm uptime, in seconds, to wait for an available IP address on this virtual machine. (0-600)
+        :param pulumi.Input[str] upgrade_engine: Upgrade the ESXI Virtual Machine engine to the supplied version or `latest`.
         :param pulumi.Input[Sequence[pulumi.Input['VMVirtualDiskArgs']]] virtual_disks: VM virtual disks.
         :param pulumi.Input[int] virtual_hw_ver: VM Virtual HW version.
         """
@@ -119,6 +121,8 @@ class VirtualMachineArgs:
             startup_timeout = 600
         if startup_timeout is not None:
             pulumi.set(__self__, "startup_timeout", startup_timeout)
+        if upgrade_engine is not None:
+            pulumi.set(__self__, "upgrade_engine", upgrade_engine)
         if virtual_disks is not None:
             pulumi.set(__self__, "virtual_disks", virtual_disks)
         if virtual_hw_ver is None:
@@ -355,6 +359,18 @@ class VirtualMachineArgs:
         pulumi.set(self, "startup_timeout", value)
 
     @property
+    @pulumi.getter(name="upgradeEngine")
+    def upgrade_engine(self) -> Optional[pulumi.Input[str]]:
+        """
+        Upgrade the ESXI Virtual Machine engine to the supplied version or `latest`.
+        """
+        return pulumi.get(self, "upgrade_engine")
+
+    @upgrade_engine.setter
+    def upgrade_engine(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "upgrade_engine", value)
+
+    @property
     @pulumi.getter(name="virtualDisks")
     def virtual_disks(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['VMVirtualDiskArgs']]]]:
         """
@@ -403,6 +419,7 @@ class VirtualMachine(pulumi.CustomResource):
                  resource_pool_name: Optional[pulumi.Input[str]] = None,
                  shutdown_timeout: Optional[pulumi.Input[int]] = None,
                  startup_timeout: Optional[pulumi.Input[int]] = None,
+                 upgrade_engine: Optional[pulumi.Input[str]] = None,
                  virtual_disks: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['VMVirtualDiskArgs']]]]] = None,
                  virtual_hw_ver: Optional[pulumi.Input[int]] = None,
                  __props__=None):
@@ -429,6 +446,7 @@ class VirtualMachine(pulumi.CustomResource):
         :param pulumi.Input[str] resource_pool_name: Resource pool name to place vm.
         :param pulumi.Input[int] shutdown_timeout: The amount of vm uptime, in seconds, to wait for an available IP address on this virtual machine. (0-600)
         :param pulumi.Input[int] startup_timeout: The amount of vm uptime, in seconds, to wait for an available IP address on this virtual machine. (0-600)
+        :param pulumi.Input[str] upgrade_engine: Upgrade the ESXI Virtual Machine engine to the supplied version or `latest`.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['VMVirtualDiskArgs']]]] virtual_disks: VM virtual disks.
         :param pulumi.Input[int] virtual_hw_ver: VM Virtual HW version.
         """
@@ -474,6 +492,7 @@ class VirtualMachine(pulumi.CustomResource):
                  resource_pool_name: Optional[pulumi.Input[str]] = None,
                  shutdown_timeout: Optional[pulumi.Input[int]] = None,
                  startup_timeout: Optional[pulumi.Input[int]] = None,
+                 upgrade_engine: Optional[pulumi.Input[str]] = None,
                  virtual_disks: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['VMVirtualDiskArgs']]]]] = None,
                  virtual_hw_ver: Optional[pulumi.Input[int]] = None,
                  __props__=None):
@@ -526,6 +545,7 @@ class VirtualMachine(pulumi.CustomResource):
             if startup_timeout is None:
                 startup_timeout = 600
             __props__.__dict__["startup_timeout"] = startup_timeout
+            __props__.__dict__["upgrade_engine"] = upgrade_engine
             __props__.__dict__["virtual_disks"] = virtual_disks
             if virtual_hw_ver is None:
                 virtual_hw_ver = 13

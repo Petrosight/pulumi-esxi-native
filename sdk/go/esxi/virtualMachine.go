@@ -8,8 +8,8 @@ import (
 	"reflect"
 
 	"errors"
+	"github.com/petrosight/pulumi-esxi-native/sdk/go/esxi/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumiverse/pulumi-esxi-native/sdk/go/esxi/internal"
 )
 
 type VirtualMachine struct {
@@ -167,6 +167,8 @@ type virtualMachineArgs struct {
 	ShutdownTimeout *int `pulumi:"shutdownTimeout"`
 	// The amount of vm uptime, in seconds, to wait for an available IP address on this virtual machine. (0-600)
 	StartupTimeout *int `pulumi:"startupTimeout"`
+	// Upgrade the ESXI Virtual Machine engine to the supplied version or `latest`.
+	UpgradeEngine *string `pulumi:"upgradeEngine"`
 	// VM virtual disks.
 	VirtualDisks []VMVirtualDisk `pulumi:"virtualDisks"`
 	// VM Virtual HW version.
@@ -213,6 +215,8 @@ type VirtualMachineArgs struct {
 	ShutdownTimeout pulumi.IntPtrInput
 	// The amount of vm uptime, in seconds, to wait for an available IP address on this virtual machine. (0-600)
 	StartupTimeout pulumi.IntPtrInput
+	// Upgrade the ESXI Virtual Machine engine to the supplied version or `latest`.
+	UpgradeEngine pulumi.StringPtrInput
 	// VM virtual disks.
 	VirtualDisks VMVirtualDiskArrayInput
 	// VM Virtual HW version.
